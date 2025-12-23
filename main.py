@@ -7,8 +7,8 @@ from ui.eula_dialog import EulaDialog
 from utils.security import encrypt_data
 
 EULA_ACCEPTED_PATH = 'resources/data/eula.accepted'
-EULA_FILE_PATH = 'EULA'
-LICENSE_FILE_PATH = 'LICENSE'
+EULA_FILE_PATH = 'resources/EULA'
+LICENSE_FILE_PATH = 'resources/LICENSE'
 
 
 def check_and_show_eula():

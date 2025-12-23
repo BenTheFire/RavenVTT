@@ -29,6 +29,8 @@ class CharacterEditorWindow(QWidget):
         self.ability_modifiers = {}
         self.skill_values = {}
         self.save_values = {}
+        self.death_save_successes = []
+        self.death_save_failures = []
 
         main_layout = QVBoxLayout(self)
         
@@ -114,7 +116,10 @@ class CharacterEditorWindow(QWidget):
         self.sprite_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.sprite_label.setStyleSheet("border: 1px solid grey; cursor: pointer;")
         header_layout.addWidget(self.sprite_label)
+        
         details_layout = QVBoxLayout()
+        
+        # Top Row: Name, Level
         name_level_layout = QHBoxLayout()
         self.name_edit = QLineEdit(placeholderText="Character Name")
         name_level_layout.addWidget(self.name_edit)
@@ -122,19 +127,35 @@ class CharacterEditorWindow(QWidget):
         self.level_spinbox.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         name_level_layout.addWidget(self.level_spinbox)
         details_layout.addLayout(name_level_layout)
+        
+        # Second Row: Class, Background, Player Name
+        class_bg_player_layout = QGridLayout()
         self.class_combo = QComboBox()
         self.class_combo.addItems(sorted(self.class_data.keys()))
-        details_layout.addWidget(self.class_combo)
-        self.race_edit = QLineEdit(placeholderText="Race")
-        details_layout.addWidget(self.race_edit)
         self.background_edit = QLineEdit(placeholderText="Background")
-        details_layout.addWidget(self.background_edit)
+        self.player_name_edit = QLineEdit(placeholderText="Player Name")
+        class_bg_player_layout.addWidget(self.class_combo, 0, 0)
+        class_bg_player_layout.addWidget(self.background_edit, 0, 1)
+        class_bg_player_layout.addWidget(self.player_name_edit, 0, 2)
+        details_layout.addLayout(class_bg_player_layout)
+
+        # Third Row: Race, Alignment, XP
+        race_align_xp_layout = QGridLayout()
+        self.race_edit = QLineEdit(placeholderText="Race")
         self.alignment_edit = QLineEdit(placeholderText="Alignment")
-        details_layout.addWidget(self.alignment_edit)
+        self.exp_spinbox = QSpinBox(prefix="XP: ")
+        self.exp_spinbox.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+        self.exp_spinbox.setMaximum(1000000)
+        race_align_xp_layout.addWidget(self.race_edit, 0, 0)
+        race_align_xp_layout.addWidget(self.alignment_edit, 0, 1)
+        race_align_xp_layout.addWidget(self.exp_spinbox, 0, 2)
+        details_layout.addLayout(race_align_xp_layout)
+
         header_layout.addLayout(details_layout)
         main_layout.addWidget(header_group)
 
         body_layout = QGridLayout()
+
         left_col_layout = QVBoxLayout()
         scores_group = QGroupBox("Ability Scores")
         scores_layout = QGridLayout(scores_group)
@@ -152,19 +173,11 @@ class CharacterEditorWindow(QWidget):
             scores_layout.addWidget(modifier_label, i, 2)
         left_col_layout.addWidget(scores_group)
 
-        attributes_group = QGroupBox("Attributes")
-        attributes_layout = QFormLayout(attributes_group)
-        self.player_name_edit = QLineEdit()
-        self.exp_spinbox = QSpinBox(maximum=1000000)
-        self.exp_spinbox.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
-        self.inspiration_spinbox = QSpinBox(maximum=10)
-        self.inspiration_spinbox.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
-        self.prof_bonus_label = QLineEdit(readOnly=True)
-        attributes_layout.addRow("Player Name:", self.player_name_edit)
-        attributes_layout.addRow("Experience Points:", self.exp_spinbox)
-        attributes_layout.addRow("Inspiration:", self.inspiration_spinbox)
-        attributes_layout.addRow("Proficiency Bonus:", self.prof_bonus_label)
-        left_col_layout.addWidget(attributes_group)
+        prof_group = QGroupBox("Proficiencies")
+        prof_layout = QVBoxLayout(prof_group)
+        self.proficiencies_list = QTextEdit(readOnly=True)
+        prof_layout.addWidget(self.proficiencies_list)
+        left_col_layout.addWidget(prof_group)
         left_col_layout.addStretch()
         body_layout.addLayout(left_col_layout, 0, 0)
 
@@ -199,27 +212,69 @@ class CharacterEditorWindow(QWidget):
         right_col_layout = QVBoxLayout()
         combat_group = QGroupBox("Combat")
         combat_layout = QFormLayout(combat_group)
+        self.prof_bonus_label = QLineEdit(readOnly=True)
         self.ac_edit = QLineEdit()
         self.initiative_edit = QLineEdit(readOnly=True)
         self.speed_edit = QLineEdit()
+        self.inspiration_spinbox = QSpinBox(maximum=10)
+        self.inspiration_spinbox.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+        combat_layout.addRow("Proficiency Bonus:", self.prof_bonus_label)
+        combat_layout.addRow("Inspiration:", self.inspiration_spinbox)
         combat_layout.addRow("Armor Class:", self.ac_edit)
         combat_layout.addRow("Initiative:", self.initiative_edit)
         combat_layout.addRow("Speed:", self.speed_edit)
         right_col_layout.addWidget(combat_group)
 
         hp_group = QGroupBox("Hit Points")
-        hp_layout = QFormLayout(hp_group)
+        hp_layout = QGridLayout(hp_group)
         self.max_hp_spinbox = QSpinBox(maximum=999)
         self.max_hp_spinbox.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.current_hp_spinbox = QSpinBox(maximum=999)
         self.current_hp_spinbox.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.temp_hp_spinbox = QSpinBox(maximum=999)
         self.temp_hp_spinbox.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
-        hp_layout.addRow("Maximum HP:", self.max_hp_spinbox)
-        hp_layout.addRow("Current HP:", self.current_hp_spinbox)
-        hp_layout.addRow("Temporary HP:", self.temp_hp_spinbox)
+        hp_layout.addWidget(QLabel("Max:"), 0, 0)
+        hp_layout.addWidget(self.max_hp_spinbox, 0, 1)
+        hp_layout.addWidget(QLabel("Current:"), 1, 0)
+        hp_layout.addWidget(self.current_hp_spinbox, 1, 1)
+        hp_layout.addWidget(QLabel("Temp:"), 2, 0)
+        hp_layout.addWidget(self.temp_hp_spinbox, 2, 1)
+        
+        death_saves_group = QGroupBox("Death Saves")
+        death_saves_layout = QHBoxLayout(death_saves_group)
+        death_saves_layout.addWidget(QLabel("Successes:"))
+        for i in range(3):
+            cb = QCheckBox()
+            self.death_save_successes.append(cb)
+            death_saves_layout.addWidget(cb)
+        death_saves_layout.addStretch()
+        death_saves_layout.addWidget(QLabel("Failures:"))
+        for i in range(3):
+            cb = QCheckBox()
+            self.death_save_failures.append(cb)
+            death_saves_layout.addWidget(cb)
+        hp_layout.addLayout(death_saves_layout, 3, 0, 1, 2)
+        
+        hit_dice_group = QGroupBox("Hit Dice")
+        hit_dice_layout = QFormLayout(hit_dice_group)
+        self.hit_dice_total_label = QLineEdit(readOnly=True)
+        self.hit_dice_current_spinbox = QSpinBox()
+        self.hit_dice_current_spinbox.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+        hit_dice_layout.addRow("Total:", self.hit_dice_total_label)
+        hit_dice_layout.addRow("Current:", self.hit_dice_current_spinbox)
+        hp_layout.addWidget(hit_dice_group, 4, 0, 1, 2)
         right_col_layout.addWidget(hp_group)
-        right_col_layout.addStretch()
+
+        actions_group = QGroupBox("Actions")
+        actions_layout = QVBoxLayout(actions_group)
+        self.actions_tabs = QTabWidget()
+        self.actions_tabs.addTab(QTextEdit(readOnly=True), "Actions")
+        self.actions_tabs.addTab(QTextEdit(readOnly=True), "Bonus Actions")
+        self.actions_tabs.addTab(QTextEdit(readOnly=True), "Reactions")
+        self.actions_tabs.addTab(QTextEdit(readOnly=True), "Free Actions")
+        actions_layout.addWidget(self.actions_tabs)
+        right_col_layout.addWidget(actions_group)
+        
         body_layout.addLayout(right_col_layout, 0, 2)
 
         main_layout.addLayout(body_layout)
@@ -262,9 +317,9 @@ class CharacterEditorWindow(QWidget):
         self.main_menu_button.clicked.connect(self._request_return_to_main_menu)
         self.class_combo.currentTextChanged.connect(self._on_class_changed)
         
-        # Connect all input widgets to the dirty flag
         for widget in self.findChildren(QLineEdit):
-            widget.textChanged.connect(self._set_dirty)
+            if not widget.isReadOnly():
+                widget.textChanged.connect(self._set_dirty)
         for widget in self.findChildren(QSpinBox):
             widget.valueChanged.connect(self._set_dirty)
         for widget in self.findChildren(QCheckBox):
@@ -273,7 +328,6 @@ class CharacterEditorWindow(QWidget):
             widget.textChanged.connect(self._set_dirty)
         self.class_combo.currentTextChanged.connect(self._set_dirty)
         
-        # Connect signals for calculations
         self.level_spinbox.valueChanged.connect(self._update_all_calculations)
         for spinbox in self.ability_scores.values():
             spinbox.valueChanged.connect(self._update_all_calculations)
@@ -307,6 +361,16 @@ class CharacterEditorWindow(QWidget):
             mod = int(self.ability_modifiers[base_ability].text())
             total = mod + prof_bonus if checkbox.isChecked() else mod
             self.skill_values[skill].setText(f"+{total}" if total >= 0 else str(total))
+        
+        class_name = self.class_combo.currentText()
+        if class_name in self.class_data:
+            class_info = self.class_data[class_name]
+            hit_dice = class_info.get("hit_dice", "d6")
+            self.hit_dice_total_label.setText(f"{level}{hit_dice}")
+            prof_text = "Armor: " + ", ".join(class_info.get("proficiencies", {}).get("armor", []))
+            prof_text += "\nWeapons: " + ", ".join(class_info.get("proficiencies", {}).get("weapons", []))
+            self.proficiencies_list.setText(prof_text)
+
     # endregion
 
     # region Data Handling (Save/Load/Class Change)
@@ -335,6 +399,11 @@ class CharacterEditorWindow(QWidget):
         self.character_data['hp_temp'] = self.temp_hp_spinbox.value()
         self.character_data['ac'] = self.ac_edit.text()
         self.character_data['speed'] = self.speed_edit.text()
+        self.character_data['hit_dice_current'] = self.hit_dice_current_spinbox.value()
+        self.character_data['death_saves'] = {
+            'successes': [cb.isChecked() for cb in self.death_save_successes],
+            'failures': [cb.isChecked() for cb in self.death_save_failures]
+        }
         
         self.character_data['ability_scores'] = {k: v.value() for k, v in self.ability_scores.items()}
         self.character_data['proficiencies'] = {
@@ -370,6 +439,7 @@ class CharacterEditorWindow(QWidget):
         self.temp_hp_spinbox.setValue(data.get('hp_temp', 0))
         self.ac_edit.setText(data.get('ac', ''))
         self.speed_edit.setText(data.get('speed', ''))
+        self.hit_dice_current_spinbox.setValue(data.get('hit_dice_current', 0))
         self.class_combo.blockSignals(False)
 
         if 'sprite' in data and data['sprite']:
@@ -400,6 +470,12 @@ class CharacterEditorWindow(QWidget):
         self.flaws_edit.setPlainText(roleplay_data.get('flaws', ''))
         self.allies_edit.setPlainText(roleplay_data.get('allies', ''))
         self.backstory_edit.setPlainText(roleplay_data.get('backstory', ''))
+        
+        death_saves = data.get('death_saves', {})
+        for i, checked in enumerate(death_saves.get('successes', [])):
+            self.death_save_successes[i].setChecked(checked)
+        for i, checked in enumerate(death_saves.get('failures', [])):
+            self.death_save_failures[i].setChecked(checked)
 
         self._apply_class_proficiencies(self.class_combo.currentText())
         self._update_all_calculations()
