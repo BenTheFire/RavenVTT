@@ -6,22 +6,23 @@ from PyQt6.QtCore import pyqtSignal, Qt
 from PyQt6.QtGui import QAction, QPixmap
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QTabWidget, QPushButton, QLabel, QMenu, 
                              QScrollArea, QGridLayout, QGroupBox, QLineEdit, QSpinBox, QCheckBox, QFormLayout,
-                             QComboBox, QSpacerItem, QSizePolicy, QFileDialog, QTextEdit)
+                             QComboBox, QSpacerItem, QSizePolicy, QFileDialog, QTextEdit, QMessageBox)
 from ui.class_choices_dialog import ClassChoicesDialog
 from ui.dice_roller_dialog import DiceRollerDialog
 
 class CharacterEditorWindow(QWidget):
-    show_main_menu_requested = pyqtSignal() # Moved to the very top of the class
+    show_main_menu_requested = pyqtSignal()
 
     # region Initialization and Core Setup
     def __init__(self):
         super().__init__()
         
+        self.is_dirty = False
+        self.current_character_path = None
         self.class_data = {}
         self.character_data = {}
         self._load_class_data()
 
-        # Dictionaries to hold UI elements for easy access
         self.save_proficiencies = {}
         self.skill_proficiencies = {}
         self.ability_scores = {}
@@ -33,7 +34,6 @@ class CharacterEditorWindow(QWidget):
         
         top_bar_layout = QHBoxLayout()
         self.main_menu_button = QPushButton("<< Main Menu")
-        self.main_menu_button.clicked.connect(self.show_main_menu_requested.emit)
         top_bar_layout.addWidget(self.main_menu_button)
         top_bar_layout.addSpacerItem(QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum))
         main_layout.addLayout(top_bar_layout)
@@ -56,16 +56,21 @@ class CharacterEditorWindow(QWidget):
 
         self._connect_signals()
         self._update_all_calculations()
+        self.is_dirty = False
     # endregion
 
     # region Menus and Dialogs
     def _create_menus(self):
         self.file_menu = QMenu("&File", self)
+        new_char_action = QAction("&New Character", self)
+        new_char_action.triggered.connect(self._new_character)
         load_char_action = QAction("&Load Character", self)
         load_char_action.triggered.connect(self._load_character)
+        save_action = QAction("&Save", self)
+        save_action.triggered.connect(self._save_character)
         save_char_as_action = QAction("Save &As...", self)
         save_char_as_action.triggered.connect(self._save_character_as)
-        self.file_menu.addActions([QAction("&New Character", self), load_char_action, QAction("&Save", self), save_char_as_action])
+        self.file_menu.addActions([new_char_action, load_char_action, save_action, save_char_as_action])
         
         self.edit_menu = QMenu("&Edit", self)
         self.edit_menu.addActions([QAction("&Undo", self), QAction("&Redo", self)])
@@ -73,6 +78,25 @@ class CharacterEditorWindow(QWidget):
     def _open_dice_roller(self):
         dialog = DiceRollerDialog(self)
         dialog.exec()
+    
+    def _check_for_unsaved_changes(self):
+        if not self.is_dirty:
+            return True
+        
+        msg_box = QMessageBox(self)
+        msg_box.setIcon(QMessageBox.Icon.Warning)
+        msg_box.setText("You have unsaved changes.")
+        msg_box.setInformativeText("Do you want to save your changes?")
+        msg_box.setStandardButtons(QMessageBox.StandardButton.Save | QMessageBox.StandardButton.Discard | QMessageBox.StandardButton.Cancel)
+        msg_box.setDefaultButton(QMessageBox.StandardButton.Save)
+        
+        ret = msg_box.exec()
+        
+        if ret == QMessageBox.StandardButton.Save:
+            return self._save_character()
+        elif ret == QMessageBox.StandardButton.Discard:
+            return True
+        return False
     # endregion
 
     # region UI Setup
@@ -83,20 +107,19 @@ class CharacterEditorWindow(QWidget):
         main_widget = QWidget()
         main_layout = QVBoxLayout(main_widget)
 
-        # Header
         header_group = QGroupBox("Character Overview")
         header_layout = QHBoxLayout(header_group)
         self.sprite_label = QLabel("Click to Upload\nCharacter Sprite")
         self.sprite_label.setFixedSize(150, 150)
         self.sprite_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.sprite_label.setStyleSheet("border: 1px solid grey; cursor: pointer;")
-        self.sprite_label.mousePressEvent = self._upload_sprite
         header_layout.addWidget(self.sprite_label)
         details_layout = QVBoxLayout()
         name_level_layout = QHBoxLayout()
         self.name_edit = QLineEdit(placeholderText="Character Name")
         name_level_layout.addWidget(self.name_edit)
         self.level_spinbox = QSpinBox(prefix="Level: ", minimum=1)
+        self.level_spinbox.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         name_level_layout.addWidget(self.level_spinbox)
         details_layout.addLayout(name_level_layout)
         self.class_combo = QComboBox()
@@ -111,10 +134,7 @@ class CharacterEditorWindow(QWidget):
         header_layout.addLayout(details_layout)
         main_layout.addWidget(header_group)
 
-        # Main Body Layout (3-column)
         body_layout = QGridLayout()
-
-        # Column 1: Ability Scores & Attributes
         left_col_layout = QVBoxLayout()
         scores_group = QGroupBox("Ability Scores")
         scores_layout = QGridLayout(scores_group)
@@ -123,6 +143,7 @@ class CharacterEditorWindow(QWidget):
             ability_key = ability.lower()
             scores_layout.addWidget(QLabel(ability), i, 0)
             score_spinbox = QSpinBox(minimum=1, maximum=30)
+            score_spinbox.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
             modifier_label = QLineEdit(readOnly=True)
             modifier_label.setFixedWidth(40)
             self.ability_scores[ability_key] = score_spinbox
@@ -135,7 +156,9 @@ class CharacterEditorWindow(QWidget):
         attributes_layout = QFormLayout(attributes_group)
         self.player_name_edit = QLineEdit()
         self.exp_spinbox = QSpinBox(maximum=1000000)
+        self.exp_spinbox.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.inspiration_spinbox = QSpinBox(maximum=10)
+        self.inspiration_spinbox.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.prof_bonus_label = QLineEdit(readOnly=True)
         attributes_layout.addRow("Player Name:", self.player_name_edit)
         attributes_layout.addRow("Experience Points:", self.exp_spinbox)
@@ -145,7 +168,6 @@ class CharacterEditorWindow(QWidget):
         left_col_layout.addStretch()
         body_layout.addLayout(left_col_layout, 0, 0)
 
-        # Column 2: Saves and Skills
         center_col_layout = QVBoxLayout()
         saves_group = QGroupBox("Saving Throws")
         saves_layout = QGridLayout(saves_group)
@@ -174,7 +196,6 @@ class CharacterEditorWindow(QWidget):
         center_col_layout.addWidget(skills_group)
         body_layout.addLayout(center_col_layout, 0, 1, 2, 1)
 
-        # Column 3: Combat Stats
         right_col_layout = QVBoxLayout()
         combat_group = QGroupBox("Combat")
         combat_layout = QFormLayout(combat_group)
@@ -189,8 +210,11 @@ class CharacterEditorWindow(QWidget):
         hp_group = QGroupBox("Hit Points")
         hp_layout = QFormLayout(hp_group)
         self.max_hp_spinbox = QSpinBox(maximum=999)
+        self.max_hp_spinbox.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.current_hp_spinbox = QSpinBox(maximum=999)
+        self.current_hp_spinbox.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.temp_hp_spinbox = QSpinBox(maximum=999)
+        self.temp_hp_spinbox.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         hp_layout.addRow("Maximum HP:", self.max_hp_spinbox)
         hp_layout.addRow("Current HP:", self.current_hp_spinbox)
         hp_layout.addRow("Temporary HP:", self.temp_hp_spinbox)
@@ -207,29 +231,22 @@ class CharacterEditorWindow(QWidget):
     def _setup_roleplay_info_tab(self):
         self.roleplay_tab = QWidget()
         layout = QVBoxLayout(self.roleplay_tab)
-        
         form_layout = QFormLayout()
-        
         self.personality_edit = QTextEdit()
         self.ideals_edit = QTextEdit()
         self.bonds_edit = QTextEdit()
         self.flaws_edit = QTextEdit()
-        
         form_layout.addRow("Personality Traits:", self.personality_edit)
         form_layout.addRow("Ideals:", self.ideals_edit)
         form_layout.addRow("Bonds:", self.bonds_edit)
         form_layout.addRow("Flaws:", self.flaws_edit)
-        
         layout.addLayout(form_layout)
-        
         self.allies_edit = QTextEdit()
         layout.addWidget(QLabel("Allies & Organizations"))
         layout.addWidget(self.allies_edit)
-        
         self.backstory_edit = QTextEdit()
         layout.addWidget(QLabel("Character Backstory"))
         layout.addWidget(self.backstory_edit)
-        
         self.tabs.addTab(self.roleplay_tab, "Roleplay Info")
 
     def _setup_placeholder_tabs(self):
@@ -238,7 +255,25 @@ class CharacterEditorWindow(QWidget):
     # endregion
 
     # region Calculations and Signals
+    def _set_dirty(self):
+        self.is_dirty = True
+
     def _connect_signals(self):
+        self.main_menu_button.clicked.connect(self._request_return_to_main_menu)
+        self.class_combo.currentTextChanged.connect(self._on_class_changed)
+        
+        # Connect all input widgets to the dirty flag
+        for widget in self.findChildren(QLineEdit):
+            widget.textChanged.connect(self._set_dirty)
+        for widget in self.findChildren(QSpinBox):
+            widget.valueChanged.connect(self._set_dirty)
+        for widget in self.findChildren(QCheckBox):
+            widget.stateChanged.connect(self._set_dirty)
+        for widget in self.findChildren(QTextEdit):
+            widget.textChanged.connect(self._set_dirty)
+        self.class_combo.currentTextChanged.connect(self._set_dirty)
+        
+        # Connect signals for calculations
         self.level_spinbox.valueChanged.connect(self._update_all_calculations)
         for spinbox in self.ability_scores.values():
             spinbox.valueChanged.connect(self._update_all_calculations)
@@ -246,7 +281,6 @@ class CharacterEditorWindow(QWidget):
             checkbox.stateChanged.connect(self._update_all_calculations)
         for checkbox in self.skill_proficiencies.values():
             checkbox.stateChanged.connect(self._update_all_calculations)
-        self.class_combo.currentTextChanged.connect(self._on_class_changed)
 
     def _update_all_calculations(self):
         level = self.level_spinbox.value()
@@ -276,6 +310,16 @@ class CharacterEditorWindow(QWidget):
     # endregion
 
     # region Data Handling (Save/Load/Class Change)
+    def _request_return_to_main_menu(self):
+        if self._check_for_unsaved_changes():
+            self.show_main_menu_requested.emit()
+
+    def _new_character(self):
+        if self._check_for_unsaved_changes():
+            self.current_character_path = None
+            self.character_data = {}
+            self._populate_sheet_from_data()
+
     def _gather_character_data(self):
         self.character_data['name'] = self.name_edit.text()
         self.character_data['level'] = self.level_spinbox.value()
@@ -359,6 +403,7 @@ class CharacterEditorWindow(QWidget):
 
         self._apply_class_proficiencies(self.class_combo.currentText())
         self._update_all_calculations()
+        self.is_dirty = False
 
     def _on_class_changed(self, class_name):
         if not class_name or class_name not in self.class_data:
@@ -395,22 +440,35 @@ class CharacterEditorWindow(QWidget):
             self.sprite_label.setPixmap(pixmap.scaled(150, 150, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation))
             with open(file_name, "rb") as image_file:
                 self.character_data['sprite'] = base64.b64encode(image_file.read()).decode('utf-8')
+            self._set_dirty()
+
+    def _save_character(self):
+        if self.current_character_path:
+            data_to_save = self._gather_character_data()
+            with open(self.current_character_path, 'w') as f:
+                json.dump(data_to_save, f, indent=4)
+            self.is_dirty = False
+            return True
+        else:
+            return self._save_character_as()
 
     def _save_character_as(self):
-        file_name, _ = QFileDialog.getSaveFileName(self, "Save Character", "", "DnD Character (*.dndc);;All Files (*)")
+        file_name, _ = QFileDialog.getSaveFileName(self, "Save Character As", "", "DnD Character (*.dndc);;All Files (*)")
         if file_name:
             if not file_name.endswith('.dndc'):
                 file_name += '.dndc'
-            data_to_save = self._gather_character_data()
-            with open(file_name, 'w') as f:
-                json.dump(data_to_save, f, indent=4)
+            self.current_character_path = file_name
+            return self._save_character()
+        return False
 
     def _load_character(self):
-        file_name, _ = QFileDialog.getOpenFileName(self, "Load Character", "", "DnD Character (*.dndc);;All Files (*)")
-        if file_name:
-            with open(file_name, 'r') as f:
-                self.character_data = json.load(f)
-            self._populate_sheet_from_data()
+        if self._check_for_unsaved_changes():
+            file_name, _ = QFileDialog.getOpenFileName(self, "Load Character", "", "DnD Character (*.dndc);;All Files (*)")
+            if file_name:
+                self.current_character_path = file_name
+                with open(file_name, 'r') as f:
+                    self.character_data = json.load(f)
+                self._populate_sheet_from_data()
 
     def _load_class_data(self):
         plugin_dir = "plugins/core_5e/classes"
