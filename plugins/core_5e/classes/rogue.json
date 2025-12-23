@@ -1,0 +1,47 @@
+{
+  "name": "Rogue",
+  "hit_dice": "d8",
+  "proficiencies": {
+    "armor": ["light"],
+    "weapons": ["simple", "hand_crossbows", "longswords", "rapiers", "shortswords"],
+    "tools": ["thieves_tools"]
+  },
+  "saving_throws": ["dexterity", "intelligence"],
+  "skill_proficiency": {
+    "choose": 4,
+    "from": ["acrobatics", "athletics", "deception", "insight", "intimidation", "investigation", "perception", "performance", "persuasion", "sleight_of_hand", "stealth"]
+  },
+  "equipment_choices": [
+    {"a": "rapier", "b": "shortsword"},
+    {"a": ["shortbow", {"arrows": 20}], "b": "shortsword"},
+    {"a": "burglar's_pack", "b": "dungeoneer's_pack", "c": "explorer's_pack"},
+    {"a": "leather_armor"},
+    {"a": ["dagger", "dagger"]},
+    {"a": "thieves_tools"}
+  ],
+  "features": {
+    "1": ["rogue/expertise", "rogue/sneak_attack", "rogue/thieves_cant"],
+    "2": ["rogue/cunning_action"],
+    "3": ["subclass"],
+    "4": ["global/asi"],
+    "5": ["rogue/uncanny_dodge"],
+    "6": ["rogue/expertise"],
+    "7": ["rogue/evasion"],
+    "8": ["global/asi"],
+    "9": ["subclass_feature"],
+    "10": ["global/asi"],
+    "11": ["rogue/reliable_talent"],
+    "12": ["global/asi"],
+    "13": ["subclass_feature"],
+    "14": ["rogue/blindsense"],
+    "15": ["rogue/slippery_mind"],
+    "16": ["global/asi"],
+    "17": ["subclass_feature"],
+    "18": ["rogue/elusive"],
+    "19": ["global/asi"],
+    "20": ["rogue/stroke_of_luck"]
+  },
+  "sneak_attack": {
+    "dice": [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10]
+  }
+}

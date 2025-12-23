@@ -1,0 +1,64 @@
+{
+  "name": "Druid",
+  "hit_dice": "d8",
+  "proficiencies": {
+    "armor": ["light", "medium", "shields"],
+    "weapons": ["clubs", "daggers", "darts", "javelins", "maces", "quarterstaffs", "scimitars", "sickles", "slings", "spears"],
+    "tools": ["herbalism_kit"]
+  },
+  "saving_throws": ["intelligence", "wisdom"],
+  "skill_proficiency": {
+    "choose": 2,
+    "from": ["arcana", "animal_handling", "insight", "medicine", "nature", "perception", "religion", "survival"]
+  },
+  "equipment_choices": [
+    {"a": "wooden_shield", "b": "any_simple_weapon"},
+    {"a": "scimitar", "b": "any_simple_melee_weapon"},
+    {"a": "leather_armor"},
+    {"a": "explorers_pack"},
+    {"a": "druidic_focus"}
+  ],
+  "features": {
+    "1": ["druid/druidic", "druid/spellcasting"],
+    "2": ["druid/wild_shape", "subclass"],
+    "3": [],
+    "4": ["druid/wild_shape_improvement", "global/asi"],
+    "5": [],
+    "6": ["subclass_feature"],
+    "7": [],
+    "8": ["druid/wild_shape_improvement", "global/asi"],
+    "9": [],
+    "10": ["subclass_feature"],
+    "11": [],
+    "12": ["global/asi"],
+    "13": [],
+    "14": ["subclass_feature"],
+    "15": [],
+    "16": ["global/asi"],
+    "17": [],
+    "18": ["druid/timeless_body", "druid/beast_spells"],
+    "19": ["global/asi"],
+    "20": ["druid/archdruid"]
+  },
+  "spellcasting": {
+    "ability": "wisdom",
+    "spell_list": "druid",
+    "preparation": {
+      "type": "prepared",
+      "base": "level",
+      "modifier": "wisdom"
+    },
+    "cantrips_known": [2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+    "spell_slots": {
+      "1": [2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+      "2": [0, 0, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      "3": [0, 0, 0, 0, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      "4": [0, 0, 0, 0, 0, 0, 1, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      "5": [0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3],
+      "6": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2],
+      "7": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2],
+      "8": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
+      "9": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1]
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "name": "Fighter",
+  "hit_dice": "d10",
+  "proficiencies": {
+    "armor": ["light", "medium", "heavy", "shields"],
+    "weapons": ["simple", "martial"],
+    "tools": []
+  },
+  "saving_throws": ["strength", "constitution"],
+  "skill_proficiency": {
+    "choose": 2,
+    "from": ["acrobatics", "animal handling", "athletics", "history", "insight", "intimidation", "perception", "survival"]
+  },
+  "equipment_choices": [
+    {"a": "chain_mail", "b": ["leather_armor", "longbow", {"arrows":  20}]},
+    {"a": ["martial_choice", "shield"], "b": ["martial_choice", "martial_choice"]},
+    {"a": ["light_crossbow", {"arrows": 20}], "b": [{"handaxe":  2}]},
+    {"a": ["dungeoneers_pack"], "b": ["explorers_pack"]}
+  ],
+  "features": {
+    "1": ["global/fighting_style", "fighter/second_wind"],
+    "2": [{"feature": "fighter/action_surge", "value": 1}],
+    "3": ["subclass"],
+    "4": ["global/asi", "global/martial_versatility"],
+    "5": [{"feature": "global/extra_attack", "value": 1}],
+    "6": ["global/asi", "global/martial_versatility"],
+    "7": ["subclass_feature"],
+    "8": ["global/asi", "global/martial_versatility"],
+    "9": [{"feature": "fighter/indomitable", "value": 1}],
+    "10": ["subclass_feature"],
+    "11": [{"feature": "global/extra_attack", "value": 2}],
+    "12": ["global/asi", "global/martial_versatility"],
+    "13": [{"feature": "fighter/indomitable", "value": 2}],
+    "14": ["global/asi", "global/martial_versatility"],
+    "15": ["subclass_feature"],
+    "16": ["global/asi", "global/martial_versatility"],
+    "17": [
+        {"feature": "fighter/action_surge", "value": 2},
+        {"feature": "fighter/indomitable", "value": 3}
+    ],
+    "18": ["subclass_feature"],
+    "19": ["global/asi", "global/martial_versatility"],
+    "20": [{"feature": "global/extra_attack", "value": 3}]
+  }
+}

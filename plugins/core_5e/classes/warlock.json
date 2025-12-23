@@ -1,0 +1,54 @@
+{
+  "name": "Warlock",
+  "hit_dice": "d8",
+  "proficiencies": {
+    "armor": ["light"],
+    "weapons": ["simple"],
+    "tools": []
+  },
+  "saving_throws": ["wisdom", "charisma"],
+  "skill_proficiency": {
+    "choose": 2,
+    "from": ["arcana", "deception", "history", "intimidation", "investigation", "nature", "religion"]
+  },
+  "equipment_choices": [
+    {"a": ["light_crossbow", {"bolts": 20}], "b": "any_simple_weapon"},
+    {"a": "component_pouch", "b": "arcane_focus"},
+    {"a": "scholars_pack", "b": "dungeoneers_pack"},
+    {"a": "leather_armor"},
+    {"a": ["any_simple_weapon", "dagger", "dagger"]}
+  ],
+  "features": {
+    "1": ["subclass", "warlock/pact_magic"],
+    "2": ["warlock/eldritch_invocations"],
+    "3": ["warlock/pact_boon"],
+    "4": ["global/asi"],
+    "5": [],
+    "6": ["subclass_feature"],
+    "7": [],
+    "8": ["global/asi"],
+    "9": [],
+    "10": ["subclass_feature"],
+    "11": ["warlock/mystic_arcanum"],
+    "12": ["global/asi"],
+    "13": ["warlock/mystic_arcanum"],
+    "14": ["subclass_feature"],
+    "15": ["warlock/mystic_arcanum"],
+    "16": ["global/asi"],
+    "17": ["warlock/mystic_arcanum"],
+    "18": [],
+    "19": ["global/asi"],
+    "20": ["warlock/eldritch_master"]
+  },
+  "spellcasting": {
+    "ability": "charisma",
+    "spell_list": "warlock",
+    "preparation": "known",
+    "cantrips_known": [2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+    "spells_known": [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15],
+    "pact_magic": {
+      "spell_slots": [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4],
+      "slot_level": [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+    }
+  }
+}

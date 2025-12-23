@@ -1,0 +1,55 @@
+{
+  "name": "Ranger",
+  "hit_dice": "d10",
+  "proficiencies": {
+    "armor": ["light", "medium", "shields"],
+    "weapons": ["simple", "martial"],
+    "tools": []
+  },
+  "saving_throws": ["strength", "dexterity"],
+  "skill_proficiency": {
+    "choose": 3,
+    "from": ["animal_handling", "athletics", "insight", "investigation", "nature", "perception", "stealth", "survival"]
+  },
+  "equipment_choices": [
+    {"a": "scale_mail", "b": "leather_armor"},
+    {"a": ["shortsword", "shortsword"], "b": ["any_simple_melee_weapon", "any_simple_melee_weapon"]},
+    {"a": "dungeoneers_pack", "b": "explorers_pack"},
+    {"a": "longbow", "arrows": 20}
+  ],
+  "features": {
+    "1": ["ranger/favored_enemy", "ranger/natural_explorer"],
+    "2": ["ranger/fighting_style", "ranger/spellcasting"],
+    "3": ["ranger/primeval_awareness", "subclass"],
+    "4": ["global/asi"],
+    "5": ["global/extra_attack"],
+    "6": ["ranger/favored_enemy_improvement", "ranger/natural_explorer_improvement"],
+    "7": ["subclass_feature"],
+    "8": ["global/asi"],
+    "9": [],
+    "10": ["ranger/natural_explorer_improvement", "ranger/hide_in_plain_sight"],
+    "11": ["subclass_feature"],
+    "12": ["global/asi"],
+    "13": [],
+    "14": ["ranger/favored_enemy_improvement", "ranger/vanish"],
+    "15": ["subclass_feature"],
+    "16": ["global/asi"],
+    "17": [],
+    "18": ["ranger/feral_senses"],
+    "19": ["global/asi"],
+    "20": ["ranger/foe_slayer"]
+  },
+  "spellcasting": {
+    "ability": "wisdom",
+    "spell_list": "ranger",
+    "preparation": "known",
+    "spells_known": [0, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11],
+    "spell_slots": {
+      "1": [0, 2, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+      "2": [0, 0, 0, 0, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      "3": [0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      "4": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 3, 3],
+      "5": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 2]
+    }
+  }
+}

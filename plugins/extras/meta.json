@@ -1,0 +1,16 @@
+{
+  "id": "extras",
+  "name": "RavenVTT Extras",
+  "type": "rulebook",
+  "author": "RavenVTT DevTeam",
+  "version": "1.0.0",
+  "engine_version": "1.0",
+  "description": "Provides the artificer class, and it's basic subclasses",
+  "source_url": "",
+  "tags": ["5e", "fantasy", "artificer"],
+
+  "load_order": 1,
+  "source_name": "RavenVTT Extras",
+
+  "dependencies": ["core_5e"]
+}

@@ -1,0 +1,63 @@
+{
+  "name": "Wizard",
+  "hit_dice": "d6",
+  "proficiencies": {
+    "armor": [],
+    "weapons": ["daggers", "darts", "slings", "quarterstaffs", "light_crossbows"],
+    "tools": []
+  },
+  "saving_throws": ["intelligence", "wisdom"],
+  "skill_proficiency": {
+    "choose": 2,
+    "from": ["arcana", "history", "insight", "investigation", "medicine", "religion"]
+  },
+  "equipment_choices": [
+    {"a": "quarterstaff", "b": "dagger"},
+    {"a": "component_pouch", "b": "arcane_focus"},
+    {"a": "scholars_pack", "b": "explorers_pack"},
+    {"a": "spellbook"}
+  ],
+  "features": {
+    "1": ["wizard/spellcasting", "wizard/arcane_recovery"],
+    "2": ["subclass"],
+    "3": ["wizard/cantrip_formulas"],
+    "4": ["global/asi"],
+    "5": [],
+    "6": ["subclass_feature"],
+    "7": [],
+    "8": ["global/asi"],
+    "9": [],
+    "10": ["subclass_feature"],
+    "11": [],
+    "12": ["global/asi"],
+    "13": [],
+    "14": ["subclass_feature"],
+    "15": [],
+    "16": ["global/asi"],
+    "17": [],
+    "18": ["wizard/spell_mastery"],
+    "19": ["global/asi"],
+    "20": ["wizard/signature_spells"]
+  },
+  "spellcasting": {
+    "ability": "intelligence",
+    "spell_list": "wizard",
+    "preparation": {
+      "type": "prepared",
+      "base": "level",
+      "modifier": "intelligence"
+    },
+    "cantrips_known": [3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
+    "spell_slots": {
+      "1": [2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+      "2": [0, 0, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      "3": [0, 0, 0, 0, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      "4": [0, 0, 0, 0, 0, 0, 1, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      "5": [0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3],
+      "6": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2],
+      "7": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2],
+      "8": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
+      "9": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1]
+    }
+  }
+}

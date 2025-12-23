@@ -1,0 +1,61 @@
+{
+  "name": "Bard",
+  "hit_dice": "d8",
+  "proficiencies": {
+    "armor": ["light"],
+    "weapons": ["simple", "hand_crossbows", "longswords", "rapiers", "shortswords"],
+    "tools": ["three_musical_instruments"]
+  },
+  "saving_throws": ["dexterity", "charisma"],
+  "skill_proficiency": {
+    "choose": 3,
+    "from": "any"
+  },
+  "equipment_choices": [
+    {"a": "rapier", "b": "longsword", "c": "any_simple_weapon"},
+    {"a": "diplomats_pack", "b": "entertainers_pack"},
+    {"a": "lute", "b": "any_other_musical_instrument"},
+    {"a": "leather_armor"},
+    {"a": "dagger"}
+  ],
+  "features": {
+    "1": ["bard/spellcasting", "bard/bardic_inspiration"],
+    "2": ["bard/jack_of_all_trades", "bard/song_of_rest"],
+    "3": ["subclass", "bard/expertise"],
+    "4": ["global/asi"],
+    "5": ["bard/font_of_inspiration", {"feature": "bard/bardic_inspiration", "dice": "d8"}],
+    "6": ["bard/countercharm", "subclass_feature"],
+    "7": [],
+    "8": ["global/asi"],
+    "9": [{"feature": "bard/song_of_rest", "dice": "d8"}],
+    "10": ["bard/expertise", "bard/magical_secrets"],
+    "11": [],
+    "12": ["global/asi"],
+    "13": [{"feature": "bard/song_of_rest", "dice": "d10"}],
+    "14": ["subclass_feature", "bard/magical_secrets"],
+    "15": [{"feature": "bard/bardic_inspiration", "dice": "d12"}],
+    "16": ["global/asi"],
+    "17": [{"feature": "bard/song_of_rest", "dice": "d12"}],
+    "18": ["bard/magical_secrets"],
+    "19": ["global/asi"],
+    "20": ["bard/superior_inspiration"]
+  },
+  "spellcasting": {
+    "ability": "charisma",
+    "spell_list": "bard",
+    "preparation": "known",
+    "cantrips_known": [2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+    "spells_known": [4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 15, 16, 18, 19, 19, 20, 22, 22, 22],
+    "spell_slots": {
+      "1": [2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+      "2": [0, 0, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      "3": [0, 0, 0, 0, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      "4": [0, 0, 0, 0, 0, 0, 1, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      "5": [0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3],
+      "6": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2],
+      "7": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2],
+      "8": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
+      "9": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1]
+    }
+  }
+}

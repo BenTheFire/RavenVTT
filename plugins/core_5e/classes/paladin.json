@@ -1,0 +1,59 @@
+{
+  "name": "Paladin",
+  "hit_dice": "d10",
+  "proficiencies": {
+    "armor": ["light", "medium", "heavy", "shields"],
+    "weapons": ["simple", "martial"],
+    "tools": []
+  },
+  "saving_throws": ["wisdom", "charisma"],
+  "skill_proficiency": {
+    "choose": 2,
+    "from": ["athletics", "insight", "intimidation", "medicine", "persuasion", "religion"]
+  },
+  "equipment_choices": [
+    {"a": ["martial_weapon", "shield"], "b": ["martial_weapon", "martial_weapon"]},
+    {"a": ["javelin", "javelin", "javelin", "javelin", "javelin"], "b": "any_simple_melee_weapon"},
+    {"a": "priests_pack", "b": "explorers_pack"},
+    {"a": "chain_mail"},
+    {"a": "holy_symbol"}
+  ],
+  "features": {
+    "1": ["paladin/divine_sense", "paladin/lay_on_hands"],
+    "2": ["paladin/fighting_style", "paladin/spellcasting", "paladin/divine_smite"],
+    "3": ["paladin/divine_health", "subclass"],
+    "4": ["global/asi"],
+    "5": ["global/extra_attack"],
+    "6": ["paladin/aura_of_protection"],
+    "7": ["subclass_feature"],
+    "8": ["global/asi"],
+    "9": [],
+    "10": ["paladin/aura_of_courage"],
+    "11": ["paladin/improved_divine_smite"],
+    "12": ["global/asi"],
+    "13": [],
+    "14": ["paladin/cleansing_touch"],
+    "15": ["subclass_feature"],
+    "16": ["global/asi"],
+    "17": [],
+    "18": ["paladin/aura_improvement"],
+    "19": ["global/asi"],
+    "20": ["subclass_feature"]
+  },
+  "spellcasting": {
+    "ability": "charisma",
+    "spell_list": "paladin",
+    "preparation": {
+      "type": "prepared",
+      "base": "level_half_rounded_down",
+      "modifier": "charisma"
+    },
+    "spell_slots": {
+      "1": [0, 2, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+      "2": [0, 0, 0, 0, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      "3": [0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      "4": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 3, 3],
+      "5": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 2]
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "name": "Monk",
+  "hit_dice": "d8",
+  "proficiencies": {
+    "armor": [],
+    "weapons": ["simple", "shortswords"],
+    "tools": ["one_artisans_tool_or_musical_instrument"]
+  },
+  "saving_throws": ["strength", "dexterity"],
+  "skill_proficiency": {
+    "choose": 2,
+    "from": ["acrobatics", "athletics", "history", "insight", "religion", "stealth"]
+  },
+  "equipment_choices": [
+    {"a": "shortsword", "b": "any_simple_weapon"},
+    {"a": "dungeoneers_pack", "b": "explorers_pack"},
+    {"a": [{"dart": 10}]}
+  ],
+  "features": {
+    "1": ["monk/unarmored_defense", "monk/martial_arts"],
+    "2": ["monk/ki", "monk/unarmored_movement"],
+    "3": ["subclass", "monk/deflect_missiles"],
+    "4": ["global/asi", "monk/slow_fall"],
+    "5": ["global/extra_attack", "monk/stunning_strike"],
+    "6": ["monk/ki_empowered_strikes", "subclass_feature"],
+    "7": ["monk/evasion", "monk/stillness_of_mind"],
+    "8": ["global/asi"],
+    "9": ["monk/unarmored_movement_improvement"],
+    "10": ["monk/purity_of_body"],
+    "11": ["subclass_feature"],
+    "12": ["global/asi"],
+    "13": ["monk/tongue_of_the_sun_and_moon"],
+    "14": ["monk/diamond_soul"],
+    "15": ["monk/timeless_body"],
+    "16": ["global/asi"],
+    "17": ["subclass_feature"],
+    "18": ["monk/empty_body"],
+    "19": ["global/asi"],
+    "20": ["monk/perfect_self"]
+  },
+  "ki": {
+    "points": [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+    "martial_arts_die": ["d4", "d4", "d4", "d4", "d6", "d6", "d6", "d6", "d6", "d6", "d8", "d8", "d8", "d8", "d8", "d8", "d10", "d10", "d10", "d10"]
+  },
+  "unarmored_movement": {
+    "speed_bonus": [0, 10, 10, 10, 15, 15, 15, 15, 20, 20, 20, 20, 25, 25, 25, 25, 30, 30, 30, 30]
+  }
+}

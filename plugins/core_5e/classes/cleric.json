@@ -1,0 +1,65 @@
+{
+  "name": "Cleric",
+  "hit_dice": "d8",
+  "proficiencies": {
+    "armor": ["light", "medium", "shields"],
+    "weapons": ["simple"],
+    "tools": []
+  },
+  "saving_throws": ["wisdom", "charisma"],
+  "skill_proficiency": {
+    "choose": 2,
+    "from": ["history", "insight", "medicine", "persuasion", "religion"]
+  },
+  "equipment_choices": [
+    {"a": "mace", "b": "warhammer"},
+    {"a": "scale_mail", "b": "leather_armor", "c": "chain_mail"},
+    {"a": ["light_crossbow", {"bolts": 20}], "b": "any_simple_weapon"},
+    {"a": "priests_pack", "b": "explorers_pack"},
+    {"a": "shield"},
+    {"a": "holy_symbol"}
+  ],
+  "features": {
+    "1": ["cleric/spellcasting", "subclass"],
+    "2": [{"feature": "cleric/channel_divinity", "value": 1}, "subclass_feature"],
+    "3": [],
+    "4": ["global/asi"],
+    "5": ["cleric/destroy_undead"],
+    "6": [{"feature": "cleric/channel_divinity", "value": 2}, "subclass_feature"],
+    "7": [],
+    "8": ["global/asi", "subclass_feature", "cleric/destroy_undead_improved"],
+    "9": [],
+    "10": ["cleric/divine_intervention"],
+    "11": ["cleric/destroy_undead_improved"],
+    "12": ["global/asi"],
+    "13": [],
+    "14": ["cleric/destroy_undead_improved", "subclass_feature"],
+    "15": [],
+    "16": ["global/asi"],
+    "17": ["cleric/destroy_undead_improved", "subclass_feature"],
+    "18": [{"feature": "cleric/channel_divinity", "value": 3}],
+    "19": ["global/asi"],
+    "20": ["cleric/divine_intervention_improved"]
+  },
+  "spellcasting": {
+    "ability": "wisdom",
+    "spell_list": "cleric",
+    "preparation": {
+      "type": "prepared",
+      "base": "level",
+      "modifier": "wisdom"
+    },
+    "cantrips_known": [3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
+    "spell_slots": {
+      "1": [2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+      "2": [0, 0, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      "3": [0, 0, 0, 0, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      "4": [0, 0, 0, 0, 0, 0, 1, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      "5": [0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3],
+      "6": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2],
+      "7": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2],
+      "8": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
+      "9": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1]
+    }
+  }
+}

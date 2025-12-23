@@ -1,0 +1,16 @@
+{
+  "id": "core_5e",
+  "name": "D&D 5e Core Rules",
+  "type": "rulebook",
+  "author": "Wizards of the Coast",
+  "version": "1.0.0",
+  "engine_version": "1.0",
+  "description": "Provides the core classes, races, and rules for Dungeons & Dragons 5th Edition.",
+  "source_url": "https://dnd.wizards.com/what-is-dnd/basic-rules",
+  "tags": ["core", "5e", "fantasy"],
+
+  "load_order": 0,
+  "source_name": "Basic Rules 5e (2018)",
+
+  "dependencies": []
+}

@@ -1,0 +1,60 @@
+{
+  "name": "Artificer",
+  "hit_dice": "d8",
+  "proficiencies": {
+    "armor": ["light", "medium", "shields"],
+    "weapons": ["simple"],
+    "tools": ["thieves_tools", "tinkers_tools", "artisans_tools"]
+  },
+  "saving_throws": ["constitution", "intelligence"],
+  "skill_proficiency": {
+    "choose": 2,
+    "from": ["arcana", "history", "investigation", "medicine", "nature", "perception", "sleight_of_hand"]
+  },
+  "equipment_choices": [
+    {"a": ["any_simple_weapon", "any_simple_weapon"]},
+    {"a": "light_crossbow"},
+    {"a": "scholars_pack", "b": "dungeoneers_pack"},
+    {"a": "leather_armor"},
+    {"a": "thieves_tools"}
+  ],
+  "features": {
+    "1": ["artificer/magical_tinkering", "artificer/spellcasting"],
+    "2": ["artificer/infuse_item"],
+    "3": ["subclass", "artificer/the_right_tool_for_the_job"],
+    "4": ["global/asi"],
+    "5": ["subclass_feature"],
+    "6": ["artificer/tool_expertise", {"feature": "artificer/infusions_known", "value": 4}],
+    "7": ["artificer/flash_of_genius"],
+    "8": ["global/asi"],
+    "9": ["subclass_feature"],
+    "10": [{"feature": "artificer/magic_item_adept", "value": 6}],
+    "11": ["artificer/spell_storing_item"],
+    "12": ["global/asi"],
+    "13": [],
+    "14": [{"feature": "artificer/magic_item_savant", "value": 10}],
+    "15": ["subclass_feature"],
+    "16": ["global/asi"],
+    "17": [],
+    "18": [{"feature": "artificer/magic_item_master", "value": 14}],
+    "19": ["global/asi"],
+    "20": ["artificer/soul_of_artifice"]
+  },
+  "spellcasting": {
+    "ability": "intelligence",
+    "spell_list": "artificer",
+    "preparation": {
+      "type": "prepared",
+      "base": "level_half_rounded_up",
+      "modifier": "intelligence"
+    },
+    "cantrips_known": [2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4],
+    "spell_slots": {
+      "1": [2, 2, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+      "2": [0, 0, 0, 0, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      "3": [0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3],
+      "4": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2],
+      "5": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2]
+    }
+  }
+}

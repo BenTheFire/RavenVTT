@@ -1,0 +1,45 @@
+{
+  "name": "Barbarian",
+  "hit_dice": "d12",
+  "proficiencies": {
+    "armor": ["light", "medium", "shields"],
+    "weapons": ["simple", "martial"],
+    "tools": []
+  },
+  "saving_throws": ["strength", "constitution"],
+  "skill_proficiency": {
+    "choose": 2,
+    "from": ["animal_handling", "athletics", "intimidation", "nature", "perception", "survival"]
+  },
+  "equipment_choices": [
+    {"a": "greataxe", "b": "any_martial_melee_weapon"},
+    {"a": ["handaxe", "handaxe"], "b": "any_simple_weapon"},
+    {"a": "explorers_pack", "javelins": 4}
+  ],
+  "features": {
+    "1": ["barbarian/rage", "barbarian/unarmored_defense"],
+    "2": ["barbarian/reckless_attack", "barbarian/danger_sense"],
+    "3": ["subclass"],
+    "4": ["global/asi"],
+    "5": ["global/extra_attack", "barbarian/fast_movement"],
+    "6": ["subclass_feature"],
+    "7": ["barbarian/feral_instinct"],
+    "8": ["global/asi"],
+    "9": ["barbarian/brutal_critical"],
+    "10": ["subclass_feature"],
+    "11": ["barbarian/relentless_rage"],
+    "12": ["global/asi"],
+    "13": ["barbarian/brutal_critical"],
+    "14": ["subclass_feature"],
+    "15": ["barbarian/persistent_rage"],
+    "16": ["global/asi"],
+    "17": ["barbarian/brutal_critical"],
+    "18": ["barbarian/indomitable_might"],
+    "19": ["global/asi"],
+    "20": ["barbarian/primal_champion"]
+  },
+  "rage": {
+    "rages": [2, 2, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, "unlimited"],
+    "damage_bonus": [2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4]
+  }
+}
