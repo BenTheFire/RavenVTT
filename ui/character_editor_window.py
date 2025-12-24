@@ -9,6 +9,7 @@ from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QTabWidget, QPus
                              QComboBox, QSpacerItem, QSizePolicy, QFileDialog, QTextEdit, QMessageBox)
 from ui.class_choices_dialog import ClassChoicesDialog
 from ui.dice_roller_dialog import DiceRollerDialog
+from ui.inventory_tab import InventoryTab
 
 class CharacterEditorWindow(QWidget):
     show_main_menu_requested = pyqtSignal()
@@ -47,6 +48,7 @@ class CharacterEditorWindow(QWidget):
         
         self._setup_char_info_tab()
         self._setup_roleplay_info_tab()
+        self._setup_inventory_tab()
         self._setup_placeholder_tabs()
 
         bottom_bar_layout = QHBoxLayout()
@@ -119,7 +121,6 @@ class CharacterEditorWindow(QWidget):
         
         details_layout = QVBoxLayout()
         
-        # Top Row: Name, Level
         name_level_layout = QHBoxLayout()
         self.name_edit = QLineEdit(placeholderText="Character Name")
         name_level_layout.addWidget(self.name_edit)
@@ -128,7 +129,6 @@ class CharacterEditorWindow(QWidget):
         name_level_layout.addWidget(self.level_spinbox)
         details_layout.addLayout(name_level_layout)
         
-        # Second Row: Class, Background, Player Name
         class_bg_player_layout = QGridLayout()
         self.class_combo = QComboBox()
         self.class_combo.addItems(sorted(self.class_data.keys()))
@@ -139,7 +139,6 @@ class CharacterEditorWindow(QWidget):
         class_bg_player_layout.addWidget(self.player_name_edit, 0, 2)
         details_layout.addLayout(class_bg_player_layout)
 
-        # Third Row: Race, Alignment, XP
         race_align_xp_layout = QGridLayout()
         self.race_edit = QLineEdit(placeholderText="Race")
         self.alignment_edit = QLineEdit(placeholderText="Alignment")
@@ -304,8 +303,11 @@ class CharacterEditorWindow(QWidget):
         layout.addWidget(self.backstory_edit)
         self.tabs.addTab(self.roleplay_tab, "Roleplay Info")
 
+    def _setup_inventory_tab(self):
+        self.inventory_widget = InventoryTab()
+        self.tabs.addTab(self.inventory_widget, "Inventory")
+
     def _setup_placeholder_tabs(self):
-        self.tabs.addTab(QLabel("Inventory system will go here."), "Inventory")
         self.tabs.addTab(QLabel("Spellbook will go here."), "Spells")
     # endregion
 
@@ -419,6 +421,16 @@ class CharacterEditorWindow(QWidget):
             'allies': self.allies_edit.toPlainText(),
             'backstory': self.backstory_edit.toPlainText()
         }
+        
+        self.character_data['equipment'] = {name: slot.item_data for name, slot in self.inventory_widget.hexagon_widget.slots.items() if slot.item_data}
+        
+        inventory = {
+            'gear': [self.inventory_widget.gear_list.item(i).data(Qt.ItemDataRole.UserRole) for i in range(self.inventory_widget.gear_list.count())],
+            'consumables': [self.inventory_widget.consumables_list.item(i).data(Qt.ItemDataRole.UserRole) for i in range(self.inventory_widget.consumables_list.count())],
+            'items': [self.inventory_widget.items_list.item(i).data(Qt.ItemDataRole.UserRole) for i in range(self.inventory_widget.items_list.count())]
+        }
+        self.character_data['inventory'] = inventory
+        
         return self.character_data
 
     def _populate_sheet_from_data(self):
@@ -476,6 +488,25 @@ class CharacterEditorWindow(QWidget):
             self.death_save_successes[i].setChecked(checked)
         for i, checked in enumerate(death_saves.get('failures', [])):
             self.death_save_failures[i].setChecked(checked)
+            
+        equipment = data.get('equipment', {})
+        for name, item_data in equipment.items():
+            if name in self.inventory_widget.hexagon_widget.slots:
+                slot = self.inventory_widget.hexagon_widget.slots[name]
+                slot.item_data = item_data
+                slot.setText(item_data['name'])
+                slot.setToolTip(format_item_tooltip(item_data))
+        
+        inventory = data.get('inventory', {})
+        self.inventory_widget.gear_list.clear()
+        for item_data in inventory.get('gear', []):
+            self.inventory_widget._add_item_to_list(item_data)
+        self.inventory_widget.consumables_list.clear()
+        for item_data in inventory.get('consumables', []):
+            self.inventory_widget._add_item_to_list(item_data)
+        self.inventory_widget.items_list.clear()
+        for item_data in inventory.get('items', []):
+            self.inventory_widget._add_item_to_list(item_data)
 
         self._apply_class_proficiencies(self.class_combo.currentText())
         self._update_all_calculations()

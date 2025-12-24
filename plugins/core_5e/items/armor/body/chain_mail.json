@@ -1,0 +1,10 @@
+{
+  "id": "chain_mail",
+  "name": "Chain Mail",
+  "type": "armor",
+  "slot": "armor",
+  "base_ac": 16,
+  "category": "heavy",
+  "strength_requirement": 13,
+  "description": "Made of interlocking metal rings."
+}

@@ -1,0 +1,10 @@
+{
+  "id": "plate_armor",
+  "name": "Plate Armor",
+  "type": "armor",
+  "slot": "armor",
+  "base_ac": 18,
+  "category": "heavy",
+  "strength_requirement": 15,
+  "description": "Consists of shaped, interlocking metal plates."
+}

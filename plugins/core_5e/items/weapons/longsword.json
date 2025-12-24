@@ -1,0 +1,8 @@
+{
+  "id": "longsword",
+  "name": "Longsword",
+  "type": "weapon",
+  "slot": ["left_hand", "right_hand"],
+  "properties": ["versatile (1d10)"],
+  "damage": "1d8 slashing"
+}

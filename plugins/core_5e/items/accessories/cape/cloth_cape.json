@@ -1,0 +1,7 @@
+{
+  "id": "cloth_cape",
+  "name": "Cloth Cape",
+  "type": "accessory",
+  "slot": "cape",
+  "description": "A simple cloth cape."
+}

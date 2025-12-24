@@ -1,0 +1,7 @@
+{
+  "id": "travelers_cloak",
+  "name": "Traveler's Cloak",
+  "type": "accessory",
+  "slot": "cape",
+  "description": "A durable cloak for long journeys."
+}

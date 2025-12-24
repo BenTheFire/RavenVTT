@@ -1,0 +1,8 @@
+{
+  "id": "greataxe",
+  "name": "Greataxe",
+  "type": "weapon",
+  "slot": ["left_hand", "right_hand"],
+  "properties": ["heavy", "two-handed"],
+  "damage": "1d12 slashing"
+}

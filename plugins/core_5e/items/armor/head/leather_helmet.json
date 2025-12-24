@@ -1,0 +1,8 @@
+{
+  "id": "leather_helmet",
+  "name": "Leather Helmet",
+  "type": "armor",
+  "slot": "head",
+  "ac_bonus": 1,
+  "description": "A simple helmet made of hardened leather."
+}

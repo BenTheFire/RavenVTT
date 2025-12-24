@@ -1,0 +1,8 @@
+{
+  "id": "shortsword",
+  "name": "Shortsword",
+  "type": "weapon",
+  "slot": ["left_hand", "right_hand"],
+  "properties": ["finesse", "light"],
+  "damage": "1d6 piercing"
+}

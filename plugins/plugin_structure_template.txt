@@ -1,0 +1,27 @@
+This file provides the template on how to structure your plugin
+
+root_folder/
+    classes/
+        class_name.json     //for more look inside the core_5e plugin on how to create spellcasters
+    creatures/
+        creature.json       // look inside the core_5e plugin on how to structure creature jsons, or create creatures with our DM tool
+    features/
+        feats/      // Place to put the "feat" type features
+        global/     // Place to put multi-use features, such as extra attack or fighting styles
+            fighting_style/     // If a feature has sub-selections, you can use another folder to reference it
+        class_name/      // Class features, such as fighter's Second Wind
+            subclass_name/      //  Subclass features, such as evocation wizards spell sculpting
+    items/
+        group_1/
+        group_2/        // When creating items you can make your own groupings, so you can more clearly navigate between the items, the engine handles all items in one from one expansion.
+    spells/
+        group_1/
+        group_2/        // When creating spells you can make your own groupings, so you can more clearly navigate between the spells, the engine handles all spells in one from one expansion.
+    subclasses/
+        class_name/
+            subclass.json
+            subclass2.json      // Examples inside the core_5e plugin
+    meta.json       // meta.json Gives important information about your plugin, it's availability and it's dependencies.
+
+
+

@@ -1,0 +1,7 @@
+{
+  "id": "reinforced_belt",
+  "name": "Reinforced Belt",
+  "type": "accessory",
+  "slot": "belt",
+  "description": "A sturdy belt with iron reinforcements."
+}

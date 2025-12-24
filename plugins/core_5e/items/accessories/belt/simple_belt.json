@@ -1,0 +1,7 @@
+{
+  "id": "simple_belt",
+  "name": "Simple Belt",
+  "type": "accessory",
+  "slot": "belt",
+  "description": "A simple leather belt."
+}

@@ -1,0 +1,9 @@
+{
+  "id": "leather_armor",
+  "name": "Leather Armor",
+  "type": "armor",
+  "slot": "armor",
+  "base_ac": 11,
+  "category": "light",
+  "description": "Armor made from tanned animal hides."
+}
