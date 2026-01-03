@@ -2,6 +2,7 @@ import os
 import json
 from PyQt6.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QTabWidget, QWidget, QLineEdit, QListWidget, 
                              QDialogButtonBox, QFormLayout, QTextEdit, QListWidgetItem)
+from PyQt6.QtGui import QPixmap
 
 class AddItemDialog(QDialog):
     def __init__(self, parent=None):
@@ -23,14 +24,13 @@ class AddItemDialog(QDialog):
         self.search_bar = QLineEdit(placeholderText="Search for an item...")
         browse_layout.addWidget(self.search_bar)
         
-        # Main content area with list and preview
         content_layout = QHBoxLayout()
         self.item_list = QListWidget()
         self.preview_panel = QTextEdit(readOnly=True)
         self.preview_panel.setPlaceholderText("Select an item to see its details...")
         
-        content_layout.addWidget(self.item_list, 1) # List takes 1/3 of space
-        content_layout.addWidget(self.preview_panel, 2) # Preview takes 2/3 of space
+        content_layout.addWidget(self.item_list, 1)
+        content_layout.addWidget(self.preview_panel, 2)
         browse_layout.addLayout(content_layout)
         
         self.tabs.addTab(browse_widget, "Browse Items")
@@ -85,13 +85,19 @@ class AddItemDialog(QDialog):
             self.preview_panel.setPlainText("Could not find item data.")
             return
 
-        # Format data into a nice HTML string for display
-        html = f"<h3>{data.get('name', 'N/A')}</h3>"
+        html = ""
+        if "image" in data:
+            # Assuming image path is relative to the plugin root
+            image_path = os.path.join("plugins/core_5e", data["image"])
+            if os.path.exists(image_path):
+                html += f'<img src="{image_path}" width="100"><br>'
+
+        html += f"<h3>{data.get('name', 'N/A')}</h3>"
         html += f"<i>{data.get('type', '').title()}</i><hr>"
         
         details = []
         for key, value in data.items():
-            if key not in ["id", "name", "type", "description"]:
+            if key not in ["id", "name", "type", "description", "image"]:
                 key_text = key.replace("_", " ").title()
                 details.append(f"<b>{key_text}:</b> {value}")
         
@@ -103,12 +109,12 @@ class AddItemDialog(QDialog):
         self.preview_panel.setHtml(html)
 
     def accept(self):
-        if self.tabs.currentIndex() == 0: # Browse tab
+        if self.tabs.currentIndex() == 0:
             selected_list_item = self.item_list.currentItem()
             if selected_list_item:
                 item_id = selected_list_item.data(32)
                 self.selected_item = self.item_data.get(item_id)
-        else: # Custom tab
+        else:
             name = self.custom_name_edit.text()
             if name:
                 self.selected_item = {
@@ -120,5 +126,3 @@ class AddItemDialog(QDialog):
         
         if self.selected_item:
             super().accept()
-        else:
-            pass

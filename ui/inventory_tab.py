@@ -1,7 +1,8 @@
 import math
 import json
+import os
 from PyQt6.QtCore import Qt, QPointF, QMimeData
-from PyQt6.QtGui import QPainter, QPolygonF, QPen, QColor, QDrag, QFont
+from PyQt6.QtGui import QPainter, QPolygonF, QPen, QColor, QDrag, QFont, QPixmap
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QTabWidget, QLabel, QGridLayout, 
                              QPushButton, QListWidget, QListWidgetItem, QApplication, QDialog, QTextBrowser)
 from ui.add_item_dialog import AddItemDialog
@@ -9,11 +10,18 @@ from ui.add_item_dialog import AddItemDialog
 def format_item_tooltip(item_data):
     if not item_data:
         return ""
-    html = f"<h3>{item_data.get('name', 'N/A')}</h3>"
+    
+    html = ""
+    if "image" in item_data:
+        image_path = os.path.join("plugins/core_5e", item_data["image"])
+        if os.path.exists(image_path):
+            html += f'<img src="{image_path}" width="64"><br>'
+
+    html += f"<h3>{item_data.get('name', 'N/A')}</h3>"
     html += f"<i>{item_data.get('type', '').title()}</i><hr>"
     details = []
     for key, value in item_data.items():
-        if key not in ["id", "name", "type", "description"]:
+        if key not in ["id", "name", "type", "description", "image"]:
             key_text = key.replace("_", " ").title()
             details.append(f"<b>{key_text}:</b> {value}")
     html += "<br>".join(details)
@@ -25,7 +33,7 @@ class ItemDetailDialog(QDialog):
     def __init__(self, item_data, parent=None):
         super().__init__(parent)
         self.setWindowTitle(item_data.get("name", "Item Details"))
-        self.setMinimumSize(300, 200)
+        self.setMinimumSize(300, 400)
         layout = QVBoxLayout(self)
         text_browser = QTextBrowser()
         text_browser.setHtml(format_item_tooltip(item_data))
@@ -61,8 +69,18 @@ class DroppableSlot(QLabel):
             self.inventory_tab.unequip_item(self.item_data)
             
         self.item_data = item_data
-        self.setText(item_data["name"])
         self.setToolTip(format_item_tooltip(item_data))
+        
+        if "image" in item_data:
+            image_path = os.path.join("plugins/core_5e", item_data["image"])
+            if os.path.exists(image_path):
+                pixmap = QPixmap(image_path)
+                self.setPixmap(pixmap.scaled(self.size(), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation))
+            else:
+                self.setText(item_data["name"]) # Fallback to name if image not found
+        else:
+            self.setText(item_data["name"])
+
         self.inventory_tab.mark_item_as_equipped(item_data["id"])
         event.acceptProposedAction()
 
@@ -70,6 +88,7 @@ class DroppableSlot(QLabel):
         if self.item_data:
             self.inventory_tab.unequip_item(self.item_data)
             self.item_data = None
+            self.setPixmap(QPixmap()) # Clear the image
             self.setText(self.slot_type.replace("_", " ").title())
             self.setToolTip("")
 

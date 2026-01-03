@@ -114,6 +114,7 @@ class CharacterEditorWindow(QWidget):
         header_group = QGroupBox("Character Overview")
         header_layout = QHBoxLayout(header_group)
         self.sprite_label = QLabel("Click to Upload\nCharacter Sprite")
+        self.sprite_label.mousePressEvent = self._upload_sprite
         self.sprite_label.setFixedSize(150, 150)
         self.sprite_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.sprite_label.setStyleSheet("border: 1px solid grey; cursor: pointer;")

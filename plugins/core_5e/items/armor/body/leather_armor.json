@@ -5,5 +5,6 @@
   "slot": "armor",
   "base_ac": 11,
   "category": "light",
-  "description": "Armor made from tanned animal hides."
+  "description": "Armor made from tanned animal hides.",
+  "image": "items/armor/body/leather_armor.png"
 }

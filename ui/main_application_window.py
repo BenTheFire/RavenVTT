@@ -1,13 +1,22 @@
 from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QMainWindow, QStackedWidget
 from ui.main_menu_window import MainMenuWindow
 from ui.uvtt_editor_window import UvttEditorWindow
 from ui.character_editor_window import CharacterEditorWindow
 
+def _resource_path(rel_path: str) -> str:
+    base = getattr(sys, "_MEIPASS", None)
+    if base:
+        return str(Path(base) / rel_path)
+    return str(Path(__file__).resolve().parents[1] / rel_path)
+
+
 class MainApplicationWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("DnD Toolbox")
+        self.setWindowIcon(QIcon("resources/icons/vtt_logo_standalone.svg"))
 
         self.stacked_widget = QStackedWidget()
         self.setCentralWidget(self.stacked_widget)
